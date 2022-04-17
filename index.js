@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require('dotenv').config()
 const { response } = require('express')
 const express = require('express')
@@ -17,11 +18,11 @@ morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 
-app.get('/api/health', (req, res, next) => {
-  res.status(200).end()
+app.get('/api/health', (_req, res, _next) => {
+  res.status(200).send('ok')
 })
 
-app.get('/api/persons', (req, res, next) => {
+app.get('/api/persons', (_req, res, next) => {
   Person
     .find({})
     .then(persons => {
@@ -43,7 +44,7 @@ app.get('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.get('/api/info', (req, res, next) => {
+app.get('/api/info', (_req, res, _next) => {
   Person
     .find({})
     .then(persons => {
@@ -89,20 +90,20 @@ app.put('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
   Person
     .findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(_result => {
       res.status(204).end()
     })
     .catch(error => next(error))
 })
 
-const unknownEndpoint = (request, response, next) => {
+const unknownEndpoint = (_request, response, _next) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
 // olemattomien osoitteiden käsittely
 app.use(unknownEndpoint)
 
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, _request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
