@@ -21,7 +21,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: build
-        run: npm run build
+        run: npm run build:ui
       - uses: akhileshns/heroku-deploy@v3.12.12
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
         with:
